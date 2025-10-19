@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HNC/HND Digital Technologies Grade Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 40px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .logo-container {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 200px;
+        }
+        
+        .logo-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .logo-placeholder {
+            width: 180px;
+            height: 80px;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+            padding: 10px;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+        }
+        
+        .header-content {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+        
+        .content-wrapper {
+            padding: 40px 30px;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border-left: 5px solid #3b82f6;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+        }
+        
+        .info-box h3 {
+            color: #1e40af;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .info-box ul {
+            margin-left: 20px;
+        }
+        
+        .info-box li {
+            margin-bottom: 8px;
+            color: #1e40af;
+        }
+        
+        .grade-reference {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .grade-reference h3 {
+            color: #1f2937;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+        
+        .grade-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .grade-item {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .grade-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-color: #3b82f6;
+        }
+        
+        .grade-item strong {
+            display: block;
+            font-size: 1.2em;
+            color: #1e40af;
+            margin-bottom: 8px;
+        }
+        
+        .selector-section {
+            margin-bottom: 35px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1f2937;
+            font-size: 1.05em;
+        }
+        
+        select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        select:hover {
+            border-color: #3b82f6;
+        }
+        
+        .units-section {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .level-container {
+            margin-bottom: 35px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 25px;
+            background: linear-gradient(135deg, #fefefe 0%, #f9fafb 100%);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .level-container h3 {
+            color: #1e40af;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #3b82f6;
+            font-size: 1.4em;
+        }
+        
+        .units-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+        
+        .unit-row {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 15px;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .unit-row:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+        }
+        
+        .unit-name {
+            font-weight: 500;
+            color: #1f2937;
+        }
+        
+        .grade-select {
+            padding: 10px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .grade-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .results-section {
+            display: none;
+            margin-top: 30px;
+            padding: 30px;
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-radius: 12px;
+            border: 2px solid #10b981;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            font-size: 1.1em;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .result-label {
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .overall-grade {
+            font-size: 2em;
+            font-weight: 700;
+            text-align: center;
+            padding: 30px;
+            margin-top: 20px;
+            background: white;
+            border-radius: 12px;
+            color: #059669;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .calculate-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .calculate-btn:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+        
+        .warning {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
+        }
+
+        .optional-note {
+            font-style: italic;
+            color: #6b7280;
+            font-size: 0.95em;
+            margin-top: 5px;
+            padding: 10px;
+            background: #fef3c7;
+            border-radius: 6px;
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            color: white;
+            padding: 40px 30px;
+            border-top: 4px solid #3b82f6;
+        }
+        
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .profile-image-container {
+            background: white;
+            padding: 5px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .profile-image-container img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .profile-placeholder {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: #d1d5db;
+            text-align: center;
+            padding: 20px;
+            border: 3px dashed #6b7280;
+        }
+        
+        .footer-info {
+            text-align: center;
+        }
+        
+        .footer-info h4 {
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            color: #60a5fa;
+            font-weight: 600;
+        }
+        
+        .footer-info .name {
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: white;
+        }
+        
+        .footer-info .title {
+            font-size: 1.05em;
+            margin-bottom: 5px;
+            opacity: 0.9;
+        }
+        
+        .footer-info .email {
+            margin: 10px 0;
+        }
+        
+        .footer-info a {
+            color: #60a5fa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-info a:hover {
+            color: #93c5fd;
+            text-decoration: underline;
+        }
+        
+        .footer-info .institution {
+            margin-top: 15px;
+            opacity: 0.85;
+            font-size: 1.05em;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .unit-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .grade-table {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <!-- TO ADD YOUR UNIVERSITY LOGO: Replace 'your-logo-url.png' with your actual logo URL -->
+                <!-- <img src="your-logo-url.png" alt="University Centre Peterborough Logo"> -->
+                
+                <!-- OR use Base64 encoded image: -->
+                <!-- <img src="data:image/png;base64,YOUR_BASE64_STRING" alt="University Logo"> -->
+                
+                <div class="logo-placeholder">University Centre Peterborough<br>Logo</div>
+            </div>
+            <div class="header-content">
+                <h1>Grade Calculator</h1>
+                <p class="subtitle">HNC/HND Digital Technologies</p>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="info-box">
+                <h3>Important Information</h3>
+                <ul>
+                    <li>HNC overall grade is calculated using all Level 4 units (120 credits)</li>
+                    <li>HND overall grade is calculated using Level 5 units only (120 credits)</li>
+                    <li>Each unit is worth 15 credits</li>
+                    <li>Compensated units (U grade) earn 0 points</li>
+                </ul>
+            </div>
+            
+            <div class="grade-reference">
+                <h3>Grade Points Reference</h3>
+                <div class="grade-table">
+                    <div class="grade-item">
+                        <strong>Pass</strong>
+                        4 points/credit<br>
+                        60 points/unit
+                    </div>
+                    <div class="grade-item">
+                        <strong>Merit</strong>
+                        6 points/credit<br>
+                        90 points/unit
+                    </div>
+                    <div class="grade-item">
+                        <strong>Distinction</strong>
+                        8 points/credit<br>
+                        120 points/unit
+                    </div>
+                </div>
+                <div class="grade-table">
+                    <div class="grade-item">
+                        <strong>Pass</strong>
+                        420-599 points
+                    </div>
+                    <div class="grade-item">
+                        <strong>Merit</strong>
+                        600-839 points
+                    </div>
+                    <div class="grade-item">
+                        <strong>Distinction</strong>
+                        840+ points
+                    </div>
+                </div>
+            </div>
+            
+            <div class="selector-section">
+                <label for="pathway">Select Your Pathway:</label>
+                <select id="pathway">
+                    <option value="">-- Select a Pathway --</option>
+                    <option value="software">Software Development and Programming</option>
+                    <option value="cyber">Cyber Security</option>
+                </select>
+                
+                <label for="qualification">Select Qualification:</label>
+                <select id="qualification">
+                    <option value="">-- Select Qualification --</option>
+                    <option value="hnc">HNC (Level 4 only)</option>
+                    <option value="hnd">HND (Levels 4 and 5)</option>
+                </select>
+            </div>
+            
+            <div id="units-section" class="units-section">
+                <!-- Units will be dynamically populated here -->
+            </div>
+            
+            <button id="calculate-btn" class="calculate-btn" style="display:none;">Calculate Overall Grade</button>
+            
+            <div id="results-section" class="results-section">
+                <!-- Results will be displayed here -->
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-content">
+                <div class="profile-image-container">
+                    <!-- TO ADD YOUR PHOTO: Replace 'your-photo-url.jpg' with your actual photo URL -->
+                    <!-- <img src="your-photo-url.jpg" alt="Dr Raghav Kovvuri"> -->
+                    
+                    <!-- OR use Base64 encoded image: -->
+                    <!-- <img src="data:image/jpeg;base64,YOUR_BASE64_STRING" alt="Dr Raghav Kovvuri"> -->
+                    
+                    <div class="profile-placeholder">Your Photo Here</div>
+                </div>
+                <div class="footer-info">
+                    <h4>Created By</h4>
+                    <p class="name">Dr Raghav Kovvuri</p>
+                    <p class="title">Course Leader - Digital Technologies</p>
+                    <p class="email"><a href="mailto:raghav.kovvuri@ieg.ac.uk">raghav.kovvuri@ieg.ac.uk</a></p>
+                    <p class="institution">University Centre Peterborough</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const units = {
+            software: {
+                level4: [
+                    { id: 1, name: "Unit 1: Professional Practice in the Digital Economy" },
+                    { id: 2, name: "Unit 2: Innovation & Digital Transformation" },
+                    { id: 3, name: "Unit 3: Cyber Security" },
+                    { id: 4, name: "Unit 4: Programming" },
+                    { id: 5, name: "Unit 5: Big Data & Visualisation" },
+                    { id: 6, name: "Unit 6: Networking in the Cloud" },
+                    { id: 10, name: "Unit 10: Database Design & Development" },
+                    { id: 11, name: "Unit 11: Software Development Lifecycles" }
+                ],
+                level5: [
+                    { id: 19, name: "Unit 19: Business Intelligence" },
+                    { id: 20, name: "Unit 20: Internet of Things" },
+                    { id: 21, name: "Unit 21: Emerging Technologies" },
+                    { id: 26, name: "Unit 26: Data Structures & Algorithms" },
+                    { id: 27, name: "Unit 27: Advanced Programming" },
+                    { id: 28, name: "Unit 28: Risk Analysis and Systems Testing" }
+                ],
+                optional: [
+                    { id: 22, name: "Unit 22: Work-based Learning in the Digital Economy" },
+                    { id: 41, name: "Unit 41: Digital Sustainability" },
+                    { id: 42, name: "Unit 42: Pitching and Negotiating Skills" }
+                ]
+            },
+            cyber: {
+                level4: [
+                    { id: 1, name: "Unit 1: Professional Practice in the Digital Economy" },
+                    { id: 2, name: "Unit 2: Innovation & Digital Transformation" },
+                    { id: 3, name: "Unit 3: Cyber Security" },
+                    { id: 4, name: "Unit 4: Programming" },
+                    { id: 5, name: "Unit 5: Big Data & Visualisation" },
+                    { id: 6, name: "Unit 6: Networking in the Cloud" },
+                    { id: 8, name: "Unit 8: Security" },
+                    { id: 9, name: "Unit 9: Networking" }
+                ],
+                level5: [
+                    { id: 19, name: "Unit 19: Business Intelligence" },
+                    { id: 20, name: "Unit 20: Internet of Things" },
+                    { id: 21, name: "Unit 21: Emerging Technologies" },
+                    { id: 23, name: "Unit 23: Applied Security in the Cloud" },
+                    { id: 24, name: "Unit 24: Applied Cryptography in the Cloud" },
+                    { id: 25, name: "Unit 25: Information Security Management in the Cloud" }
+                ],
+                optional: [
+                    { id: 22, name: "Unit 22: Work-based Learning in the Digital Economy" },
+                    { id: 41, name: "Unit 41: Digital Sustainability" },
+                    { id: 42, name: "Unit 42: Pitching and Negotiating Skills" }
+                ]
+            }
+        };
+
+        const gradePoints = {
+            'P': 60,
+            'M': 90,
+            'D': 120,
+            'U': 0,
+            '': 0
+        };
+
+        document.getElementById('pathway').addEventListener('change', updateUnits);
+        document.getElementById('qualification').addEventListener('change', updateUnits);
+        document.getElementById('calculate-btn').addEventListener('click', calculateGrades);
+
+        function updateUnits() {
+            const pathway = document.getElementById('pathway').value;
+            const qualification = document.getElementById('qualification').value;
+            const unitsSection = document.getElementById('units-section');
+            const calculateBtn = document.getElementById('calculate-btn');
+            
+            if (!pathway || !qualification) {
+                unitsSection.style.display = 'none';
+                calculateBtn.style.display = 'none';
+                return;
+            }
+            
+            unitsSection.innerHTML = '';
+            unitsSection.style.display = 'block';
+            calculateBtn.style.display = 'block';
+            
+            const selectedUnits = units[pathway];
+            
+            const level4Container = createLevelContainer('Level 4 Units (HNC)', selectedUnits.level4, 'level4');
+            unitsSection.appendChild(level4Container);
+            
+            if (qualification === 'hnd') {
+                const level5Container = createLevelContainer('Level 5 Units (HND)', selectedUnits.level5, 'level5');
+                unitsSection.appendChild(level5Container);
+                
+                const optionalContainer = document.createElement('div');
+                optionalContainer.className = 'level-container';
+                optionalContainer.innerHTML = `
+                    <h3>Optional Units (Select 2 for Level 5)</h3>
+                    <p class="optional-note">Choose exactly 2 optional units to complete your 120 Level 5 credits</p>
+                `;
+                const optionalGrid = document.createElement('div');
+                optionalGrid.className = 'units-grid';
+                
+                selectedUnits.optional.forEach(unit => {
+                    const unitRow = createUnitRow(unit, 'optional');
+                    optionalGrid.appendChild(unitRow);
+                });
+                
+                optionalContainer.appendChild(optionalGrid);
+                unitsSection.appendChild(optionalContainer);
+            }
+        }
+
+        function createLevelContainer(title, units, level) {
+            const container = document.createElement('div');
+            container.className = 'level-container';
+            
+            const heading = document.createElement('h3');
+            heading.textContent = title;
+            container.appendChild(heading);
+            
+            const grid = document.createElement('div');
+            grid.className = 'units-grid';
+            
+            units.forEach(unit => {
+                const unitRow = createUnitRow(unit, level);
+                grid.appendChild(unitRow);
+            });
+            
+            container.appendChild(grid);
+            return container;
+        }
+
+        function createUnitRow(unit, level) {
+            const row = document.createElement('div');
+            row.className = 'unit-row';
+            
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'unit-name';
+            nameDiv.textContent = unit.name;
+            
+            const select = document.createElement('select');
+            select.className = 'grade-select';
+            select.dataset.unitId = unit.id;
+            select.dataset.level = level;
+            
+            select.innerHTML = `
+                <option value="">-- Select Grade --</option>
+                <option value="D">Distinction</option>
+                <option value="M">Merit</option>
+                <option value="P">Pass</option>
+                <option value="U">U (Compensated)</option>
+            `;
+            
+            row.appendChild(nameDiv);
+            row.appendChild(select);
+            
+            return row;
+        }
+
+        function calculateGrades() {
+            const qualification = document.getElementById('qualification').value;
+            const resultsSection = document.getElementById('results-section');
+            
+            const level4Selects = document.querySelectorAll('[data-level="level4"]');
+            const level5Selects = document.querySelectorAll('[data-level="level5"]');
+            const optionalSelects = document.querySelectorAll('[data-level="optional"]');
+            
+            let level4Points = 0;
+            let level4Ungraded = 0;
+            
+            level4Selects.forEach(select => {
+                const grade = select.value;
+                if (grade) {
+                    level4Points += gradePoints[grade];
+                } else {
+                    level4Ungraded++;
+                }
+            });
+            
+            let level5Points = 0;
+            let level5Ungraded = 0;
+            let optionalSelected = 0;
+            
+            if (qualification === 'hnd') {
+                level5Selects.forEach(select => {
+                    const grade = select.value;
+                    if (grade) {
+                        level5Points += gradePoints[grade];
+                    } else {
+                        level5Ungraded++;
+                    }
+                });
+                
+                optionalSelects.forEach(select => {
+                    const grade = select.value;
+                    if (grade) {
+                        level5Points += gradePoints[grade];
+                        optionalSelected++;
+                    }
+                });
+                
+                if (optionalSelected !== 2) {
+                    alert('Please select exactly 2 optional units for Level 5');
+                    return;
+                }
+                
+                if (level5Ungraded > 0) {
+                    alert('Please enter grades for all Level 5 core units');
+                    return;
+                }
+            }
+            
+            if (level4Ungraded > 0 && qualification === 'hnc') {
+                alert('Please enter grades for all Level 4 units');
+                return;
+            }
+            
+            resultsSection.style.display = 'block';
+            resultsSection.innerHTML = '';
+            
+            const heading = document.createElement('h3');
+            heading.textContent = 'Your Results';
+            heading.style.marginBottom = '20px';
+            heading.style.color = '#047857';
+            resultsSection.appendChild(heading);
+            
+            if (qualification === 'hnc') {
+                displayResults(level4Points, 'HNC');
+            } else {
+                const level4Status = document.createElement('div');
+                level4Status.className = 'warning';
+                level4Status.innerHTML = `<strong>Level 4 Status:</strong> ${level4Points} points (${getGrade(level4Points)})`;
+                resultsSection.appendChild(level4Status);
+                
+                displayResults(level5Points, 'HND');
+            }
+        }
+
+        function displayResults(points, qualification) {
+            const resultsSection = document.getElementById('results-section');
+            
+            const pointsDiv = document.createElement('div');
+            pointsDiv.className = 'result-item';
+            pointsDiv.innerHTML = `
+                <span class="result-label">Total Points:</span>
+                <span><strong>${points}</strong></span>
+            `;
+            resultsSection.appendChild(pointsDiv);
+            
+            const overallGrade = getGrade(points);
+            const gradeDiv = document.createElement('div');
+            gradeDiv.className = 'overall-grade';
+            gradeDiv.innerHTML = `Overall ${qualification} Grade: ${overallGrade}`;
+            resultsSection.appendChild(gradeDiv);
+            
+            const reminder = document.createElement('div');
+            reminder.className = 'info-box';
+            reminder.style.marginTop = '20px';
+            reminder.innerHTML = `
+                <strong>Award Requirements:</strong> To be awarded the ${qualification}, you need:
+                <ul>
+                    <li>120 credits at Level ${qualification === 'HNC' ? '4' : '5'}</li>
+                    <li>At least 105 credits at Pass or better</li>
+                    ${qualification === 'HND' ? '<li>Completed Level 4 requirements</li>' : ''}
+                    <li>Maximum one 15-credit unit can be compensated (U grade)</li>
+                </ul>
+            `;
+            resultsSection.appendChild(reminder);
+        }
+
+        function getGrade(points) {
+            if (points >= 840) return 'Distinction';
+            if (points >= 600) return 'Merit';
+            if (points >= 420) return 'Pass';
+            return 'Unclassified';
+        }
+    </script>
+</body>
+</html>
